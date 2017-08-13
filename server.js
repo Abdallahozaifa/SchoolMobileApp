@@ -28,9 +28,13 @@ app.get('/', function(req, res, next) {
 io.on('connection', function(client) {
     console.log('Client connected...');
 
-    client.on('join', function(data) {
+    client.on('notification-request', function(data) {
         console.log(data);
-        client.emit('messages', 'Hello from server');
+        timer.setTimer("2017-08-13", "13:27:00", 1000, function(status) {
+            if (status == "Success") {
+                client.emit('notification', 'Your exam is coming up!');
+            }
+        });
     });
 });
 

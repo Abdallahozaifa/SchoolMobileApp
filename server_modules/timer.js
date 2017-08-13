@@ -9,7 +9,7 @@
  *             TIMER MODULE             *
  ****************************************/
 (function() {
-    var setTimer = function(date, time, notificationTime) {
+    var setTimer = function(date, time, notificationTime, callback) {
         var countDownDate = new Date(date + " " + time).getTime();
 
         // Update the count down every 1 second
@@ -28,12 +28,14 @@
             var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
             // If the count down is over, write some text 
-            if (distance < 0) {
+            if (distance == 0) {
                 clearInterval(x);
-                console.log("Time to send Notification");
+                callback("Success");
+                // console.log("Time to send Notification");
             }
             else {
-                console.log("Current Time: %s:%s:%s", new Date().getHours(), new Date().getMinutes(), new Date().getSeconds());
+                callback("Not Ready")
+                // console.log("Current Time: %s:%s:%s", new Date().getHours(), new Date().getMinutes(), new Date().getSeconds());
                 // Output the result in an element with id="demo"
                 console.log(days + "d " + hours + "h " + minutes + "m " + seconds + "s ");
             }

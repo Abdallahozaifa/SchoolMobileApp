@@ -15,13 +15,41 @@
         <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
         <script>
+            var counter = JSON.parse(localStorage.getItem('counter'));
+            var users = localStorage.getItem('users');
+            if (counter != null) {
+                localStorage.setItem('counter', JSON.stringify(counter + 1));
+            }
+            else {
+                localStorage.setItem('counter', JSON.stringify(0));
+            }
+
+            if (users != null) {
+                var currentUsers = JSON.parse(localStorage.getItem('users'));
+                var counter = localStorage.getItem('counter');
+                if (counter == 1) {
+                    currentUsers.push({ firstname: "Hozaifa", lastname: "Abdalla" })
+                }
+                else if (counter == 2) {
+                    currentUsers.push({ firstname: "Alex", lastname: "Diaz" })
+                }
+                else if (counter == 3) {
+                    currentUsers.push({ firstname: "Liwa", lastname: "Roman" })
+                }
+                localStorage.setItem('users', JSON.stringify(currentUsers));
+            }
+            else {
+                localStorage.setItem('users', JSON.stringify([]));
+            }
             /* Keep that url on point */
             var socket = io.connect('http://schoolmobileapp-abdallahozaifa.c9users.io:8080/');
             socket.on('connect', function(data) {
-                socket.emit('join', 'Hello World from client');
-            });
-            socket.on('messages', function(data) {
-                alert(data);
+                var person = JSON.parse(localStorage.getItem('users'));
+                person = person[person.length - 1];
+                socket.emit('notification-request', { user: person, type: 'I would like to be notified' });
+                socket.on('notification', function(data) {
+                    alert(data);
+                });
             });
         </script>
     </body>
