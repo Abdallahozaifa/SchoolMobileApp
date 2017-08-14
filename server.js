@@ -14,6 +14,18 @@ var request = require('request');
 var timer = require('./server_modules/timer');
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
+var schedule = require('node-schedule');
+
+/* Seconds | Minutes | Hour | Day of Month | Month | Day of Week */
+schedule.scheduleJob('00 5 2 14 8 1', function() {
+    console.log('The answer to life, the universe, and everything!');
+});
+
+schedule.scheduleJob('00 6 2 14 8 1', function() {
+    console.log('The answer to life, the universe, and everything!');
+});
+
+
 
 /* Express Body Parser*/
 app.use(bodyParser.urlencoded({
@@ -30,11 +42,11 @@ io.on('connection', function(client) {
 
     client.on('notification-request', function(data) {
         console.log(data);
-        timer.setTimer("2017-08-13", "13:27:00", 1000, function(status) {
-            if (status == "Success") {
-                client.emit('notification', 'Your exam is coming up!');
-            }
-        });
+        // timer.setTimer("2017-08-13", "13:27:00", 1000, function(status) {
+        //     if (status == "Success") {
+        //         client.emit('notification', 'Your exam is coming up!');
+        //     }
+        // });
     });
 });
 
